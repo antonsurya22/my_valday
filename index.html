@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>Happy Valentine 💌</title>
+
+<!-- Pacifico Font -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --ink:#4a2433;
+  --muted:#7a5060;
+  --accent:#ff4d5a;
+  --border:#f2d6df;
+  --heart:#ff4d5a; /* NEW: heart color */
+}
+
+/* DREAMY PINK BACKGROUND (cards area kept clean) */
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  color:var(--ink);
+  overflow-x:hidden;
+
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255,105,135,.25), transparent 40%),
+    radial-gradient(circle at 80% 20%, rgba(255,130,160,.25), transparent 45%),
+    radial-gradient(circle at 50% 80%, rgba(255,100,140,.20), transparent 45%),
+    linear-gradient(180deg, #ffe6ee 0%, #ffd6e3 100%);
+}
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,.35), transparent 60%);
+  pointer-events:none;
+}
+
+.wrap{
+  max-width:1000px;
+  margin:auto;
+  padding:20px;
+  text-align:center;
+  position:relative;
+  z-index:1;
+}
+
+/* TOP TEXT */
+.topPrompt{
+  font-family:"Pacifico",cursive;
+  color:var(--accent);
+  font-size:clamp(42px,7vw,70px);
+  margin: 6px 0 10px;
+  text-shadow:0 4px 12px rgba(255,77,90,.25);
+}
+
+/* TITLE */
+.title{
+  font-size:clamp(20px, 3.2vw, 30px);
+  font-weight:900;
+  margin:10px 0 6px;
+  letter-spacing:.2px;
+}
+.title span{ color:var(--accent); }
+
+.subtitle{
+  color:var(--muted);
+  margin: 0 0 6px;
+  font-size: 14px;
+}
+
+.small{
+  font-size:13px;
+  color:var(--muted);
+  margin: 0 0 18px;
+}
+
+/* CARD AREA (keep clean) */
+.cardContainer{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+  background:#ffeef2;
+  padding:20px;
+  border-radius:25px;
+  box-shadow:0 20px 60px rgba(255,105,135,.25);
+}
+
+.card{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:28px 22px 26px;
+  cursor:pointer;
+  transition: transform .15s ease, box-shadow .2s ease;
+  min-height:170px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  -webkit-tap-highlight-color: transparent;
+}
+.card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 18px 32px rgba(0,0,0,.08);
+}
+.card:active{ transform: translateY(-1px); }
+
+/* ICONS (bigger) */
+.cardIcon{
+  width:52px;                 /* was 42px */
+  height:52px;                /* was 42px */
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: rgba(255,77,90,.10);
+  border: 1px solid rgba(255,77,90,.20);
+  box-shadow: 0 10px 20px rgba(255,77,90,.10);
+  font-size:22px;             /* was 18px */
+  margin-bottom:10px;
+}
+
+/* Heart icon special color */
+.cardIcon.heart{
+  color: var(--heart);
+}
+
+.card h3{
+  margin: 6px 0 6px;
+  font-size: 18px;
+}
+.card p{
+  margin:0;
+  font-size:14px;
+  color:var(--muted);
+}
+
+/* MODAL */
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.42);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  z-index: 50;
+}
+.overlay.show{display:flex}
+
+.modal{
+  background:white;
+  max-width:620px;
+  width:100%;
+  padding:22px;
+  border-radius:20px;
+  text-align:left;
+  position:relative;
+  box-shadow: 0 22px 60px rgba(0,0,0,.25);
+}
+
+.close{
+  position:absolute;
+  top:10px;
+  right:15px;
+  cursor:pointer;
+  font-weight:900;
+  border-radius:999px;
+  width:36px;
+  height:36px;
+  display:grid;
+  place-items:center;
+  background: rgba(255,77,90,.10);
+  color: var(--accent);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dashed{
+  border:2px dashed rgba(255,77,90,.7);
+  padding:18px;
+  border-radius:15px;
+  background:#fff7f9;
+  line-height: 1.7;
+}
+
+.btn{
+  margin-top:15px;
+  background:var(--accent);
+  color:white;
+  border:none;
+  padding:12px 18px;
+  border-radius:999px;
+  cursor:pointer;
+  font-weight: 800;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* MUSIC BUTTON */
+.musicBtn{
+  position:fixed;
+  bottom:18px;
+  right:18px;
+  background:var(--accent);
+  color:white;
+  border:none;
+  width:52px;
+  height:52px;
+  border-radius:999px;
+  cursor:pointer;
+  font-size:20px;
+  box-shadow:0 10px 24px rgba(0,0,0,.22);
+  z-index:60;
+  -webkit-tap-highlight-color: transparent;
+}
+.musicBtn:active{ transform: translateY(1px); }
+
+/* Floating hearts (pink/red) */
+.hearts{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  overflow:hidden;
+  z-index:0;
+}
+.h{
+  position:absolute;
+  top:-12vh;
+  animation:fall linear infinite;
+  opacity:.26;
+  filter: blur(.1px);
+  color: var(--heart); /* NEW: hearts color */
+}
+@keyframes fall{
+  to{transform:translateY(120vh)}
+}
+
+/* Gallery (6 photos) */
+.gallery{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:10px;
+  margin-top:14px;
+}
+.gallery img{
+  width:100%;
+  aspect-ratio:1/1;
+  object-fit:cover;
+  border-radius:14px;
+  cursor:pointer;
+  transition:.15s;
+  border: 1px solid rgba(0,0,0,.06);
+}
+.gallery img:active{ transform: scale(.985); }
+
+/* Mobile optimizations */
+@media(max-width:768px){
+  .wrap{ padding: 14px; }
+  .cardContainer{
+    grid-template-columns:1fr;
+    padding: 14px;
+    border-radius: 22px;
+  }
+  .card{
+    min-height: 138px;
+    padding: 22px 18px;
+    border-radius: 18px;
+  }
+  .card h3{ font-size: 17px; }
+  .card p{ font-size: 13px; }
+
+  /* bigger icons on mobile too (slightly) */
+  .cardIcon{
+    width:54px;
+    height:54px;
+    font-size:23px;
+  }
+
+  .subtitle{ font-size: 13.5px; }
+  .small{ font-size: 12.5px; margin-bottom: 14px; }
+
+  /* Bigger, scroll-friendly modal on mobile */
+  .overlay{ padding: 12px; align-items: flex-end; }
+  .modal{
+    border-radius: 20px 20px 0 0;
+    max-width: 100%;
+    max-height: 82vh;
+    overflow: auto;
+    padding: 18px;
+  }
+  .gallery{
+    grid-template-columns: repeat(2, 1fr);
+    gap:10px;
+  }
+}
+
+/* Very small phones */
+@media(max-width:380px){
+  .topPrompt{ font-size: 42px; }
+  .title{ font-size: 19px; }
+  .gallery{ gap: 8px; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- MUSIC (put bg-music.mp3 inside /assets/) -->
+<audio id="bgMusic" autoplay loop preload="auto">
+  <source src="assets/bg-music.mp3" type="audio/mpeg">
+</audio>
+
+<button class="musicBtn" onclick="toggleMusic()" id="musicControl" aria-label="Toggle music">🔊</button>
+
+<div class="hearts" id="hearts"></div>
+
+<div class="wrap">
+
+  <div class="topPrompt">Choose an Envelope</div>
+
+  <div class="title">
+    Explore the little things I love about <span>us</span>
+  </div>
+
+  <div class="subtitle">
+    My greatest adventure start with you 💗
+  </div>
+
+  <div class="small">Tap a card below ..</div>
+
+  <div class="cardContainer">
+
+    <div class="card" onclick="openModal('memories')">
+      <div class="cardIcon">🖼️</div>
+      <h3>Our Journey</h3>
+      <p>A roadmap of us, from the first "hello" to the miles we've conquered together</p>
+    </div>
+
+    <div class="card" onclick="openModal('letter')">
+      <div class="cardIcon">✉️</div>
+      <h3>My Letter</h3>
+      <p>A collection of thoughts I've kept for you</p>
+    </div>
+
+    <div class="card" onclick="openModal('why')">
+      <div class="cardIcon heart">❤</div>
+      <h3>Reasons to Love You</h3>
+      <p>A breakdown of the little things that make this journey so beautiful. You are the constant in my ever-changing world</p>
+    </div>
+
+    <div class="card" onclick="openModal('date')">
+      <div class="cardIcon">📅</div>
+      <h3>The Taiwan Blueprint</h3>
+      <p>Valentine's Day is just the countdown. Counting the seconds until I'm by your side</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay" onclick="overlayClose(event)">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="close" onclick="closeModal()" aria-label="Close">✕</div>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+/* ===== MUSIC CONTROL ===== */
+const music = document.getElementById("bgMusic");
+const control = document.getElementById("musicControl");
+
+function toggleMusic(){
+  if(music.paused){
+    music.play().catch(()=>{});
+    control.textContent = "🔊";
+  } else {
+    music.pause();
+    control.textContent = "🔈";
+  }
+}
+
+document.addEventListener("click", () => {
+  music.play().then(()=> {
+    if(!music.paused) control.textContent = "🔊";
+  }).catch(()=>{});
+}, { once:true });
+
+music.volume = 0.6;
+
+/* ===== Falling hearts (pink/red) ===== */
+const hearts=document.getElementById("hearts");
+const isMobile = window.matchMedia("(max-width: 768px)").matches;
+const heartCount = isMobile ? 18 : 28;
+
+for(let i=0;i<heartCount;i++){
+  let h=document.createElement("div");
+  h.className="h";
+  h.innerHTML=Math.random()>0.5?"❤":"♥";
+  h.style.left=Math.random()*100+"vw";
+  h.style.animationDuration=(7+Math.random()*7)+"s";
+  h.style.fontSize=(12+Math.random()*14)+"px";
+  h.style.opacity = (isMobile ? 0.18 : 0.26);
+  hearts.appendChild(h);
+}
+
+/* ===== Modal ===== */
+function openModal(type){
+  const content=document.getElementById("modalContent");
+  content.innerHTML="";
+
+  if(type==="letter"){
+    content.innerHTML=`
+      <h2 style="margin:0 0 12px;color:var(--accent);">To My Valentine 💌</h2>
+      <div class="dashed">
+        <p style="margin:0 0 12px;"><strong>Dearest A-Ying (阿瑩)</strong></p>
+        <p style="margin:0 0 12px;">I feel incredibly lucky to have you in my life.</p>
+        <p style="margin:0 0 12px;">With you, I found the home I’ve been searching for.</p>
+        <p style="margin:0 0 12px;">I feel your presence with me every single day, guiding me and making me the happiest man alive.</p>
+        <p style="margin:0;"><strong>Happy Valentine’s Day ❤️</strong></p>
+      </div>
+    `;
+  }
+
+  if(type==="why"){
+    content.innerHTML=`
+      <h2 style="margin:0 0 12px;color:var(--accent);">Why I Love You ❤️</h2>
+      <div class="dashed">
+        <ul style="margin:0; padding-left:18px;">
+          <li style="margin:8px 0;">You make me feel calm</li>
+          <li style="margin:8px 0;">You are my clarity when I feel lost</li>
+          <li style="margin:8px 0;">Your smile is my favorite thing</li>
+          <li style="margin:8px 0;">You truly care</li>
+          <li style="margin:8px 0;">I can be my true self with you</li>
+          <li style="margin:8px 0;">My role model and my love ❤️ </li>
+        </ul>
+      </div>
+    `;
+  }
+
+  if(type==="date"){
+    content.innerHTML=`
+      <h2 style="margin:0 0 12px;color:var(--accent);">Be My Valentine? 🍿</h2>
+      <div class="dashed" style="text-align:center;">
+        <div style="font-size:40px; margin-bottom:6px;">🤗</div>
+        <h3 style="margin:6px 0 6px;">Big Hug and Pat-pat</h3>
+        <p style="margin:0 0 12px; color:var(--muted); font-weight:600;">Will you be my Valentine? I can't wait to give you a big hug and see your beautiful face in person next week! 🥺</p>
+        <button class="btn" onclick="alert('Screenshot this and send it back ❤️')">
+          Yes, I'd love to!
+        </button>
+        <p style="margin:12px 0 0; font-size:12.5px; color:var(--muted);">
+          (Saving the best hug for our reunion! 🦋❤️)
+        </p>
+      </div>
+    `;
+  }
+
+  if(type==="memories"){
+    content.innerHTML=`
+      <h2 style="margin:0 0 12px;color:var(--accent);">Our Memories 🖼️</h2>
+      <div class="dashed">
+        <div style="color:var(--muted); font-size:13px; margin-bottom:10px;">
+          Tap a photo to view it clearly.
+        </div>
+        <div class="gallery">
+          <img src="assets/img1.jpg" alt="Memory 1" onclick="zoom(this.src)">
+          <img src="assets/img2.jpg" alt="Memory 2" onclick="zoom(this.src)">
+          <img src="assets/img3.jpg" alt="Memory 3" onclick="zoom(this.src)">
+          <img src="assets/img4.jpg" alt="Memory 4" onclick="zoom(this.src)">
+          <img src="assets/img5.jpg" alt="Memory 5" onclick="zoom(this.src)">
+          <img src="assets/img6.jpg" alt="Memory 6" onclick="zoom(this.src)">
+          <img src="assets/img7.jpg" alt="Memory 7" onclick="zoom(this.src)">
+          <img src="assets/img8.jpg" alt="Memory 8" onclick="zoom(this.src)">
+          <img src="assets/img9.jpg" alt="Memory 9" onclick="zoom(this.src)">
+          <img src="assets/img10.jpg" alt="Memory 10" onclick="zoom(this.src)">
+          <img src="assets/img11.jpg" alt="Memory 11" onclick="zoom(this.src)">
+          <img src="assets/img12.jpg" alt="Memory 12" onclick="zoom(this.src)">
+        </div>
+      </div>
+    `;
+  }
+
+  document.getElementById("overlay").classList.add("show");
+  document.body.style.overflow = "hidden";
+}
+
+function closeModal(){
+  document.getElementById("overlay").classList.remove("show");
+  document.body.style.overflow = "";
+  const lb = document.getElementById("lightbox");
+  if(lb) lb.remove();
+}
+
+function overlayClose(e){
+  if(e.target.id === "overlay") closeModal();
+}
+
+window.addEventListener("keydown", (e)=>{
+  if(e.key === "Escape") closeModal();
+});
+
+/* ===== Image zoom ===== */
+function zoom(src){
+  const existing = document.getElementById("lightbox");
+  if(existing) existing.remove();
+
+  const overlay = document.createElement("div");
+  overlay.id = "lightbox";
+  overlay.style.position = "fixed";
+  overlay.style.inset = "0";
+  overlay.style.background = "rgba(0,0,0,.75)";
+  overlay.style.display = "grid";
+  overlay.style.placeItems = "center";
+  overlay.style.zIndex = "70";
+  overlay.style.padding = "12px";
+  overlay.style.cursor = "zoom-out";
+
+  const img = document.createElement("img");
+  img.src = src;
+  img.alt = "Memory photo";
+  img.style.maxWidth = "96vw";
+  img.style.maxHeight = "82vh";
+  img.style.borderRadius = "16px";
+  img.style.boxShadow = "0 22px 60px rgba(0,0,0,.35)";
+  img.style.background = "#fff";
+  img.style.objectFit = "contain";
+
+  overlay.appendChild(img);
+  overlay.addEventListener("click", ()=> overlay.remove());
+
+  document.body.appendChild(overlay);
+}
+</script>
+
+</body>
+</html>
